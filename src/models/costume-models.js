@@ -18,14 +18,14 @@ function createCost(name, price) {
 }
 function updateCost(id, name, price) {
    const idCost = costumes.find(idCost => idCost.id === id)
-   if (!idCost) return { error : ['could not find custome']}
+   if (!idCost) return { error: {message: 'No costume with that ID.'}}
    if (name) idCost.name = name
    if (price) idCost.price = price
    return idCost
 }
 function deleteCost(id) {
     const idCost = costumes.find(idCost => idCost.id === id)
-    if (!idCost) return
+    if (!idCost) return {error: {message: 'No costume by that id to delete.'}}
     costumes.splice(costumes.indexOf(idCost), 1)
     return idCost
 }
@@ -45,12 +45,11 @@ function getOneTag(id, tagId) {
     if (!idTag) {
         return { error: { message: `We don't have that tag!`}}
     }
-
     return idTag
 }
 function createTag(id, tagName) {
     const idCost = costumes.find(idCost => idCost.id === id)
-    if (!idCost) return {error: {status: 404, message: `Can't create tag; No costume by that ID.`}}
+    if (!idCost) return {error: {message: `Can't create tag; No costume by that ID.`}}
     const newTag = {}
     newTag.id = uuid()
     newTag.name = tagName
@@ -59,16 +58,17 @@ function createTag(id, tagName) {
 }
 function deleteTag(id, tagId) {
     const idCost = costumes.find(idCost => idCost.id === id)
-    if (!idCost) return {error: {status: 404, message: `Can't delete tag; No costume by that ID.`}}
+    if (!idCost) return {error: {message: `Can't delete tag; No costume by that ID.`}}
     const idTag = idCost.tags.find(idTag => idTag.id === tagId)
+    if (!idCost) return {error: {message: `No tag with that ID for this costume.`}}
     idCost.tags.splice(idCost.tags.indexOf(idTag), 1)
     return idTag
 }
 function updateTag(id, tagId, name) {
     const idCost = costumes.find(idCost => idCost.id === id)
-    if (!idCost) return {error: {status: 404, message: `Can't update tag; No costume by that ID.`}}
+    if (!idCost) return {error: {message: `Can't update tag; No costume by that ID.`}}
     const idTag = idCost.tags.find(idTag => idTag.id === tagId)
-    if (!idTag) return
+    if (!idTag) return {error: {message: `Costume has no tag with that ID.`}}
     idTag.name = name
     return idTag
 }
