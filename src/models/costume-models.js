@@ -18,7 +18,7 @@ function createCost(name, price) {
 }
 function updateCost(id, name, price) {
    const idCost = costumes.find(idCost => idCost.id === id)
-   if (!idCost) return
+   if (!idCost) return { error : ['could not find custome']}
    if (name) idCost.name = name
    if (price) idCost.price = price
    return idCost
@@ -39,9 +39,13 @@ function getAllTags(id) {
 function getOneTag(id, tagId) {
     const idCost = costumes.find(idCost => idCost.id === id)
     if (!idCost) {
-        return {error: {status: 400, message: `We don't even have that costume!`}}
+        return { error: { message: `We don't even have that costume!`}}
     }
     const idTag = idCost.tags.find(idTag => idTag.id === tagId)
+    if (!idTag) {
+        return { error: { message: `We don't have that tag!`}}
+    }
+
     return idTag
 }
 function createTag(id, tagName) {

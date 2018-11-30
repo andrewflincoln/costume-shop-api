@@ -13,7 +13,9 @@ function createCost(req, res, next) {
 }
 function updateCost(req, res, next) {
     const idCost = model.updateCost(req.params.id, req.body.name, req.body.price)
-    if (!idCost) return next()
+
+    if (idCost.error) return next({status: 404, message: idCost.error})
+    
     res.status(201).send(idCost)
 }
 function deleteCost(req, res, next) {
@@ -30,7 +32,9 @@ function getAllTags(req, res, next) {
 }
 function getOneTag(req, res, next) {
     const tag = model.getOneTag(req.params.id, req.params.tagId)
-    if (!tag) return next({status: 400, message: `Costume has no tag by that ID.`})
+
+    if (tag.error) return next({status: 404, message: tag.error})
+    
     res.status(200).send(tag)
 }
 function createTag(req, res, next) {
